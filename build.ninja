@@ -37,10 +37,13 @@ builddir = $build_dir
 #   $(find $project_path$project_name\src -name "*.cpp")
 
 srcList = lib\src\lib_sample.cpp sample\src\sample.cpp sample\src\main.cpp
-globalIncludePath = sample\inc
-libIncludePath = $project_path\lib\inc
+globalIncludePath = $project_name\inc
 errorLimit = 10
 cppStandard = -std=c++20
+
+# Libraries
+
+libIncludePath = lib\inc
 
 # Windows Terminal Arguments :
 
@@ -48,7 +51,7 @@ tabColor = "#000"
 
 # RULES
 
-rule compile
+rule cc
   command = clang++ -Wall $cppStandard -ferror-limit=$errorLimit -I $globalIncludePath -I $libIncludePath $srcList -o $build_dir$project_title.exe
 
 rule clear
@@ -65,7 +68,7 @@ rule setup
   
 # BUILDS
   
-build bld : compile
+build bld : cc
 build cls : clear
 build stp : setup
 build run : run
