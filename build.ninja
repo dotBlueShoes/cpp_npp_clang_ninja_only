@@ -51,7 +51,7 @@ tabColor = "#000"
 
 # RULES
 
-rule cc
+rule compile
   command = clang++ -Wall $cppStandard -ferror-limit=$errorLimit -I $globalIncludePath -I $libIncludePath $srcList -o $build_dir$project_title.exe
 
 rule clear
@@ -68,7 +68,7 @@ rule setup
   
 # BUILDS
   
-build bld : cc
+build bld : compile
 build cls : clear
 build stp : setup
 build run : run
