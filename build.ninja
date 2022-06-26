@@ -22,7 +22,8 @@
 #   command = clang++ $compileFlags $in -o $out
 # build Sample.exe : cc sample/src/sample.cpp sample/src/main.cpp 
 
-include properties.ninja
+include .ninja\properties.ninja
+include .ninja\secret.ninja
 
 # Ninja variables
 
