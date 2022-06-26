@@ -54,7 +54,7 @@ rule clear
   command = rm $build_dir$project_title.exe
   
 rule run
-  command = wt -w 1 --title project_title --tabColor $tabColor $project_path$build_dir$project_title.exe
+  command = wt -w 1 --title $project_title --tabColor $tabColor $project_path$build_dir$project_title.exe
   
 rule setup
   ## To get the properties file set.
