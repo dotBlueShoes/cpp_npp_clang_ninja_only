@@ -25,10 +25,6 @@
 include .ninja\properties.ninja
 include .ninja\secret.ninja
 
-# Ninja variables
-
-builddir = $build_dir
-
 # Libraries
 
 libName = lib
@@ -36,8 +32,8 @@ libIncludePath = $libName\inc
 
 # Compilation Arguments :
 
-srcList = $libName\src\lib_sample.cpp $project_name\src\sample.cpp $project_name\src\main.cpp
-globalIncludePath = $project_name\inc
+srcList = $libName\src\lib_sample.cpp $projectName\src\sample.cpp $projectName\src\main.cpp
+globalIncludePath = $projectName\inc
 errorLimit = 10
 cppStandard = -std=c++20
 
@@ -48,23 +44,26 @@ tabColor = "#000"
 # RULES
 
 rule compile
-  command = clang++ -Wall $cppStandard -ferror-limit=$errorLimit -I $globalIncludePath -I $libIncludePath $srcList -o $build_dir$project_title.exe
+  command = clang++ -Wall $cppStandard -ferror-limit=$errorLimit -I $globalIncludePath -I $libIncludePath $srcList -o $buildDir\$projectTitle.exe
 
 rule clear
-  command = rm $build_dir$project_title.exe
+  command = rm $buildDir\$projectTitle.exe
   
 rule run
-  command = wt -w 1 --title $project_title --tabColor $tabColor $project_path$build_dir$project_title.exe
+  command = wt -w 1 --title $projectTitle --tabColor $tabColor $projectPath\$buildDir\$projectTitle.exe
   
+# Setups project path in .ninja/secret.ninja
 rule setup
-  ## To get the properties file set.
-  ##  - project path
-  ## And other in future.
-  command = echo lol
+  command = cmd /c wt -w 1 --title $projectTitle --tabColor $tabColor $toolsPath --setup %cd%
+  
+rule refresh
+  command = cmd /c $toolsPath --refresh-npp $projectName.npp $projectPath\$projectName $projectPath\$libName
   
 # BUILDS
   
 build bld : compile
+build rsh : refresh
 build cls : clear
 build stp : setup
 build run : run
+
