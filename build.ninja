@@ -37,8 +37,13 @@ libIncludePath = $libName\inc
 
 srcList = $libName\src\lib_sample.cpp $projectName\src\sample.cpp $projectName\src\main.cpp
 globalIncludePath = $projectName\inc
-errorLimit = 10
 cppStandard = -std=c++20
+errorLimit = 10
+
+releasePath = 
+debugPath = debug
+64bitPath = x64
+86bitPath = x86
 
 # Windows Terminal Arguments :
 
@@ -46,8 +51,14 @@ tabColor = "#000"
 
 # RULES
 
-rule compile
-  command = clang++ -Wall $cppStandard -ferror-limit=$errorLimit -I $globalIncludePath -I $libIncludePath $srcList -o $buildDir\$projectTitle.exe
+rule release64bitCompile
+  command = clang++ -Wall $cppStandard -ferror-limit=$errorLimit -I $globalIncludePath -I $libIncludePath $srcList -o $buildDir\$64bitPath$releasePath\$projectTitle.exe
+rule debug64bitCompile
+  command = clang++ -Wall $cppStandard -m32 --debug -ferror-limit=$errorLimit -I $globalIncludePath -I $libIncludePath $srcList -o $buildDir\$64bitPath\$debugPath\$projectTitle.exe
+rule release32bitCompile
+  command = clang++ -Wall $cppStandard -ferror-limit=$errorLimit -I $globalIncludePath -I $libIncludePath $srcList -o $buildDir\$86bitPath$releasePath\$projectTitle.exe
+rule debug32bitCompile
+  command = clang++ -Wall $cppStandard -m32 --debug -ferror-limit=$errorLimit -I $globalIncludePath -I $libIncludePath $srcList -o $buildDir\$86bitPath\$debugPath\$projectTitle.exe
 
 rule clear
   command = rm $buildDir\$projectTitle.exe
@@ -64,7 +75,8 @@ rule refresh
   
 # BUILDS
   
-build bld : compile
+build bld : release64bitCompile
+build dbg : debug64bitCompile
 build rsh : refresh
 build cls : clear
 build stp : setup
